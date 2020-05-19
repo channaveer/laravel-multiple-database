@@ -29,6 +29,8 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        \DB::select("SET FOREIGN_KEY_CHECKS = 0");
         Schema::dropIfExists('users');
+        \DB::select("SET FOREIGN_KEY_CHECKS = 1");
     }
 }

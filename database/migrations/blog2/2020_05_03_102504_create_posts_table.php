@@ -17,7 +17,7 @@ class CreatePostsTable extends Migration
         Schema::connection('mysql2')->create('posts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on(new Expression('blog1.users'));
+            $table->foreign('user_id')->references('id')->on(new Expression('blog1.users'))->onDelete('cascade');
             $table->string('title');
             $table->longText('body');
             $table->dateTime('published_on')->nullable();
@@ -32,6 +32,8 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
+        \DB::select("SET FOREIGN_KEY_CHECKS = 0");
         Schema::connection('mysql2')->dropIfExists('posts');
+        \DB::select("SET FOREIGN_KEY_CHECKS = 1");
     }
 }
